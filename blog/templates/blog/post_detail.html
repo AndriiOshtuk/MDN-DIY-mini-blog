@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content%}
+    <h4>{{post}}</h4>
+    <p><strong>Post date</strong> {{post.post_date}}</p>
+    <p><strong>Author:</strong>  
+        <a href="{% url 'blogger-detail' post.blogger.pk %}">{{post.blogger}}</a>
+    </p>
+    <p><strong>Description:</strong></p>
+    <p>{{post.content}}</p>
+{%endblock%}
