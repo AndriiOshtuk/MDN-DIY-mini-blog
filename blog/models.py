@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 
 # Create your models here.
 class Blogger(models.Model):
