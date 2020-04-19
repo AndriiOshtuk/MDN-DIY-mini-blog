@@ -132,3 +132,6 @@ dmypy.json
 *.sublime-project
 *.sublime-workspace
 
+*.bak
+
+
