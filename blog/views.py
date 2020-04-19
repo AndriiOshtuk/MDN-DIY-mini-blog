@@ -20,4 +20,5 @@ class PostDetailView(generic.DetailView):
 
 
 def index(request):
-    pass
+    context = {}
+    return render(request, 'index.html', context=context)
