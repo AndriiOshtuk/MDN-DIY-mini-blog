@@ -4,8 +4,8 @@ from django.urls import reverse # Used to generate URLs by reversing the URL pat
 
 # Create your models here.
 class Blogger(models.Model):
-    nickname = models.CharField(max_length=50, help_text="Enter blogger nickname")
-    bio = models.CharField(max_length=300, help_text="Enter blogger biographical information")
+    nickname = models.CharField(max_length=50, verbose_name='Nickname', help_text='Enter blogger nickname')
+    bio = models.CharField(max_length=300, help_text='Enter blogger biographical information')
 
     #TODO How to connect with blogs list?
     # blogs_list = models.
@@ -21,10 +21,10 @@ class Blogger(models.Model):
 
            
 class Post(models.Model):
-    title = models.CharField(max_length=100, help_text="Enter post title")
+    title = models.CharField(max_length=100, verbose_name='Title', help_text='Enter post title')
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
-    post_date = models.DateField(default=date.today())
-    content = models.TextField(help_text="Enter post text")
+    post_date = models.DateField(default=date.today(), verbose_name='Post date')
+    content = models.TextField(help_text='Enter post text', verbose_name='Description')
     #TODO Add comments
     # comments = 
 
