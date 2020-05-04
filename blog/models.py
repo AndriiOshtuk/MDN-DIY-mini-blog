@@ -19,7 +19,7 @@ class Blogger(models.Model):
     def get_absolute_url(self):
         return reverse('blogger-detail', args=[str(self.id)])
 
-           
+
 class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name='Title', help_text='Enter post title')
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
