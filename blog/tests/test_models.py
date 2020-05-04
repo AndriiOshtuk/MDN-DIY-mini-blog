@@ -28,6 +28,14 @@ class BloggerModelTest(TestCase):
         max_length = blogger._meta.get_field('bio').max_length
         self.assertEquals(max_length, 300)
 
+    def test_object_name_is_blogger_name(self):
+        blogger = Blogger.objects.get(id=1)
+        self.assertEquals(blogger.nickname, str(blogger))
+
+    def test_get_absolute_url(self):
+        blogger = Blogger.objects.get(id=1)
+        self.assertEquals(blogger.get_absolute_url(), '/blog/blogger/1')
+
 
 class PostModelTest(TestCase):
     @classmethod
@@ -66,5 +74,15 @@ class PostModelTest(TestCase):
         self.assertEquals(field_label, 'Description')
 
     def test_content_length(self):
-        self.assertTrue(False)
+        post = Post.objects.get(id=1)
+        max_length = post._meta.get_field('content').max_length
+        self.assertEquals(max_length, 5000)
+
+    def test_object_name_is_post_title(self):
+        post = Post.objects.get(id=1)
+        self.assertEquals(post.title, str(post))
+
+    def test_get_absolute_url(self):
+        post = Post.objects.get(id=1)
+        self.assertEquals(post.get_absolute_url(), '/blog/1')
 
