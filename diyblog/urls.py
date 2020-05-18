@@ -18,11 +18,16 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls'))
+    path('blog/', include('blog.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='blog/', permanent=True)),
+]
+
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
