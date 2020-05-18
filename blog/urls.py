@@ -10,7 +10,7 @@ urlpatterns = [
     path('<int:pk>', views.PostDetailView.as_view(), name='blog-detail'),
 
     
-    path('logout/', views.index, name='logout'),
-    path('login/', views.index, name='login'),
+    # path('logout/', views.index, name='logout'),
+    # path('login/', views.index, name='login'),
     
 ]
