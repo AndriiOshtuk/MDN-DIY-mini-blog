@@ -8,4 +8,17 @@
     </p>
     <p><strong>Description:</strong></p>
     <p>{{post.content}}</p>
+
+    <p><strong>Comments:</strong></p>
+        {% if comment_list%}
+            {% for comment in comment_list %}
+                <p>{{comment.text}}</p>
+            {% endfor%}
+        {% endif %}
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'add-comment' %}">Add a new comment</a>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to add a new comment</p>
+    {% endif %}
 {%endblock%}

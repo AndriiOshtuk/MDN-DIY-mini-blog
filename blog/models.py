@@ -37,3 +37,15 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('blog-detail', args=[str(self.id)])
 
+
+class Comment(models.Model):
+    text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
+    post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        ordering = ['-post_date']
+
+    def __str__(self):
+        return self.text
