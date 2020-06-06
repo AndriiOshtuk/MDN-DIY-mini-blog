@@ -9,11 +9,13 @@
     <p><strong>Description:</strong></p>
     <p>{{post.content}}</p>
 
-    <p><strong>Comments:</strong></p>
+    <p><strong>Comments:</strong></p><hr>
         {% if comment_list%}
             {% for comment in comment_list %}
-                <p>{{comment.text}}</p>
+                <p>{{comment.user}} ({{comment.post_date}}) - {{comment.text}}</p><hr>
             {% endfor%}
+        {% else %}
+            <p>No comments yet</p>
         {% endif %}
 
     {% if user.is_authenticated %}
