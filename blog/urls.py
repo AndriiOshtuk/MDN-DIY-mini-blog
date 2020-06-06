@@ -9,6 +9,8 @@ urlpatterns = [
     # path('blog/<int:pk>', views.PostDetailView.as_view(), name='blog-detail'),
     path('<int:pk>', views.PostDetailView.as_view(), name='blog-detail'),
 
+    path('comment/create/', views.CommentCreate.as_view(), name='add-comment'),
+
     
     # path('logout/', views.index, name='logout'),
     # path('login/', views.index, name='login'),

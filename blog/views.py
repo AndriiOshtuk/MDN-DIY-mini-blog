@@ -25,6 +25,21 @@ class PostDetailView(generic.DetailView):
         return context
 
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+import datetime
+
+# @login_required
+class CommentCreate(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['text']
+    initial = {'post_date': datetime.datetime.now(), 'user' : self.request.user}
+    success_url = reverse_lazy('index')
+
+    
+
+
 def index(request):
     context = {}
 
