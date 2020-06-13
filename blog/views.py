@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from blog.models import Blogger, Post, Comment
+from faker import Faker
 
 # Create your views here.
 class BloggerListView(generic.ListView):
@@ -13,7 +14,7 @@ class BloggerDetailView(generic.DetailView):
 
 class PostListView(generic.ListView):
     model = Post
-    paginate_by = 5
+    paginate_by = 20
 
 
 class PostDetailView(generic.DetailView):
@@ -34,7 +35,7 @@ import datetime
 class CommentCreate(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['text']
-    initial = {'post_date': datetime.datetime.now(), 'user' : self.request.user}
+    # initial = {'post_date': datetime.datetime.now(), 'user' : self.request.user}
     success_url = reverse_lazy('index')
 
     
@@ -66,5 +67,24 @@ def index(request):
     # except Exception as e:
     #     print(e)
     #     print(e.body)
+
+    return render(request, 'index.html', context=context)
+
+
+def populate(request):
+    context = {}
+    fake = Faker()
+
+    for _ in range(5):
+        simple_profile = fake.simple_profile()
+        nickname = simple_profile.get('username', 'Dummy')
+        bio = simple_profile.get('name', 'Dummy')
+        blogger = Blogger.objects.create(nickname=nickname, bio=bio)
+
+        for _ in range(5):
+            title = fake.text()
+            content = fake.text()
+            post_date = fake.date_between(start_date='-5y',)
+            Post.objects.create(title=title, content=content, post_date=post_date, blogger= blogger)
 
     return render(request, 'index.html', context=context)
