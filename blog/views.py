@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from blog.models import Blogger, Post, Comment
+from django.urls import reverse
 from faker import Faker
 
 # Create your views here.
@@ -30,13 +31,35 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 import datetime
+from django.shortcuts import render, get_object_or_404
 
 # @login_required
 class CommentCreate(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['text']
-    # initial = {'post_date': datetime.datetime.now(), 'user' : self.request.user}
     success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        """
+        Add author and associated blog to form data before setting it as valid (so it is saved to model)
+        """
+        #Add logged-in user as author of comment
+        form.instance.user = self.request.user
+        #Associate comment with blog based on passed id
+        form.instance.post=get_object_or_404(Post, pk = self.kwargs['pk'])
+
+        # Call super-class form validation behaviour
+        return super(CommentCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CommentCreate, self).get_context_data(**kwargs)
+        # Get the blogger object from the "pk" URL parameter and add it to the context
+        context['post'] = get_object_or_404(Post, pk = self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
 
     
 

@@ -19,7 +19,7 @@
         {% endif %}
 
     {% if user.is_authenticated %}
-        <a href="{% url 'add-comment' %}">Add a new comment</a>
+        <a href="{% url 'add-comment' post.pk %}">Add a new comment</a>
     {% else %}
         <p><a href="{% url 'login' %}">Login</a> to add a new comment</p>
     {% endif %}

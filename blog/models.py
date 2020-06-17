@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Blogger(models.Model):
@@ -12,7 +13,7 @@ class Blogger(models.Model):
    
     class Meta:
         ordering = ['nickname']
- 
+
     def __str__(self):
         return self.nickname
 
@@ -25,8 +26,6 @@ class Post(models.Model):
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
     post_date = models.DateField(default=date.today(), verbose_name='Post date')
     content = models.TextField(max_length=5000, help_text='Enter post text', verbose_name='Description')
-    #TODO Add comments
-    # comments = 
 
     class Meta:
         ordering = ['-post_date']
@@ -42,7 +41,7 @@ class Comment(models.Model):
     text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ['-post_date']
