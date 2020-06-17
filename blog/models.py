@@ -22,7 +22,7 @@ class Blogger(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Title', help_text='Enter post title')
+    title = models.CharField(max_length=200, verbose_name='Title', help_text='Enter post title')
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
     post_date = models.DateField(default=date.today(), verbose_name='Post date')
     content = models.TextField(max_length=5000, help_text='Enter post text', verbose_name='Description')
