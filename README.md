@@ -7,7 +7,7 @@ This is a simple blog based on Django framework.
 
 ## Features
 * There are models for blogger, post, comment
-* All users could see list of posts and bloggers, as well as individual 
+* All users could see list of posts and bloggers 
 * All users could see individual posts with comments and dedicated blogger page
 * Loggeed in users can leave comments for posts
 * Users can log in, log out and reset password
