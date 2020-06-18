@@ -21,9 +21,11 @@ This is a simple blog built with Python and Django.
 
 ## Check it out
 The application is available at https://mdn-diy-mini-blog.herokuapp.com  
-**Note:** It may take few minutes for Heroku to reload app.  
+  
 Use test user credentials:
 ```
   $ User: testuser
   $ Password: testuser
 ```
+
+**Note:** It may take few minutes for Heroku to reload app.
