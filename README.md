@@ -3,7 +3,7 @@ DIY mini blog assignment done as final step of MDN tutorial.
 
 ## Overview
 
-This is a simple blog based on Django framework.
+This is a simple blog powered by Django framework.
 
 ## Features
 * There are models for blogger, post, comment
