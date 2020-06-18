@@ -21,6 +21,7 @@ This is a simple blog based on Django framework.
 
 ## Check it out
 The application is available at https://mdn-diy-mini-blog.herokuapp.com 
+Use test user credentials:
 ```
   $ testuser
   $ testuser
