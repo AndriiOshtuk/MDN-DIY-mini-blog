@@ -25,7 +25,7 @@ The application is available at https://mdn-diy-mini-blog.herokuapp.com
 Use test user credentials:
 ```
   $ User: testuser
-  $ Password: testuser
+  $ Password: testpassword
 ```
 
 **Note:** It may take few minutes for Heroku to reload app.
