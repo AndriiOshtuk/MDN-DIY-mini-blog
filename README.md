@@ -17,6 +17,7 @@ This is a simple blog built with Python and Django.
 * Django 3.0
 * Python 3.6
 * Heroku
+* SendGrid
 * sqlite3
 
 ## Check it out
