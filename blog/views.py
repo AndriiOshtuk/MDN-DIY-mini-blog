@@ -66,31 +66,6 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 
 def index(request):
     context = {}
-
-    # import os
-    # from sendgrid import SendGridAPIClient
-    # from sendgrid.helpers.mail import Mail
-
-    # print('Index')
-
-    # message = Mail(
-    #     from_email='andriy.oshtuk@gmail.com',
-    #     to_emails='andriy.oshtuk@gmail.com',
-    #     subject='Sending with Twilio SendGrid is Fun',
-    #     html_content='<strong>and easy to do anywhere, even with Python</strong>')
-    # try:
-    #     sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-    #     print(sg)
-    #     print(message)
-    #     response = sg.send(message)
-    #     print('Send email')
-    #     print(response.status_code)
-    #     print(response.body)
-    #     print(response.headers)
-    # except Exception as e:
-    #     print(e)
-    #     print(e.body)
-
     return render(request, 'index.html', context=context)
 
 

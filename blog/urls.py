@@ -9,12 +9,5 @@ urlpatterns = [
     path('blog/<int:pk>', views.PostDetailView.as_view(), name='blog-detail'),
     path('comment/create/', views.CommentCreate.as_view(), name='add-comment'),
     path('comment/<int:pk>/create/', views.CommentCreate.as_view(), name='add-comment'),
-
-
-    path('populate',  views.populate, name='populate'),
-
-    
-    # path('logout/', views.index, name='logout'),
-    # path('login/', views.index, name='login'),
-    
+    path('populate',  views.populate, name='populate'),    
 ]
