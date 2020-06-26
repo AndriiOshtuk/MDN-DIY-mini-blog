@@ -6,10 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Blogger(models.Model):
     nickname = models.CharField(max_length=50, verbose_name='Nickname', help_text='Enter blogger nickname')
-    bio = models.CharField(max_length=300, help_text='Enter blogger biographical information')
-
-    #TODO How to connect with blogs list?
-    # blogs_list = models.
+    bio = models.CharField(max_length=300, verbose_name='Bio', help_text='Enter blogger biographical information')
    
     class Meta:
         ordering = ['nickname']

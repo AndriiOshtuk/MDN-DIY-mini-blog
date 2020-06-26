@@ -6,7 +6,7 @@ from datetime import date
 class BloggerModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Blogger.objects.create(nickname='BigBoss', bio='It is a dunny test blogger')
+        Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
 
     def test_nickname_label(self):
         blogger = Blogger.objects.get(id=1)
@@ -21,7 +21,7 @@ class BloggerModelTest(TestCase):
     def test_bio_label(self):
         blogger = Blogger.objects.get(id=1)
         field_label = blogger._meta.get_field('bio').verbose_name
-        self.assertEquals(field_label, 'bio')
+        self.assertEquals(field_label, 'Bio')
 
     def test_bio_length(self):
         blogger = Blogger.objects.get(id=1)
@@ -40,7 +40,7 @@ class BloggerModelTest(TestCase):
 class PostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dunny test blogger')
+        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
         Post.objects.create(
             title='Post 1 title',
             blogger=test_blogger,
