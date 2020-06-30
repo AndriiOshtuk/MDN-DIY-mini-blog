@@ -55,7 +55,7 @@ class PostModelTest(TestCase):
     def test_title_length(self):
         post = Post.objects.get(id=1)
         max_length = post._meta.get_field('title').max_length
-        self.assertEquals(max_length, 100)
+        self.assertEquals(max_length, 300)
 
     def test_post_date_label(self):
         post = Post.objects.get(id=1)
