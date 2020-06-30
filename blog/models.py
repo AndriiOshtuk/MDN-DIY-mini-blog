@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 class Blogger(models.Model):
     """
     Stores a single blogger bio information, related to :model:'auth.User'.
-
     """
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     bio = models.CharField(max_length=300, verbose_name='Bio', help_text='Enter blogger biographical information')
@@ -25,7 +24,6 @@ class Blogger(models.Model):
 class Post(models.Model):
     """
     Stores a single blog post, related to :model:'blog.Blogger'.
-
     """
     title = models.CharField(max_length=300, verbose_name='Title', help_text='Enter post title')
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
@@ -45,7 +43,6 @@ class Post(models.Model):
 class Comment(models.Model):
     """
     Stores a single comment, related to :model:'auth.User' and :model:'blog.Post'.
-
     """
     text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
