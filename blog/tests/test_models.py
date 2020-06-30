@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
 from blog.models import Blogger, Post
 from datetime import date
 
@@ -6,17 +7,11 @@ from datetime import date
 class BloggerModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
+        user = User.objects.create_user(username='BigBoss', password='1X<ISRUkw+tuK')
+        Blogger.objects.create(user=user, bio='It is a dummy test blogger')
 
-    def test_nickname_label(self):
-        blogger = Blogger.objects.get(id=1)
-        field_label = blogger._meta.get_field('nickname').verbose_name
-        self.assertEquals(field_label, 'Nickname')
-
-    def test_nickname_length(self):
-        blogger = Blogger.objects.get(id=1)
-        max_length = blogger._meta.get_field('nickname').max_length
-        self.assertEquals(max_length, 50)
+    # TODO add test case for username.verbose_name
+    # TODO add test case for username.max_length
 
     def test_bio_label(self):
         blogger = Blogger.objects.get(id=1)
@@ -30,7 +25,7 @@ class BloggerModelTest(TestCase):
 
     def test_object_name_is_blogger_name(self):
         blogger = Blogger.objects.get(id=1)
-        self.assertEquals(blogger.nickname, str(blogger))
+        self.assertEquals(blogger.user.username, str(blogger))
 
     def test_get_absolute_url(self):
         blogger = Blogger.objects.get(id=1)
@@ -40,7 +35,8 @@ class BloggerModelTest(TestCase):
 class PostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
+        user = User.objects.create_user(username='BigBoss', password='1X<ISRUkw+tuK')
+        test_blogger = Blogger.objects.create(user=user, bio='It is a dummy test blogger')
         Post.objects.create(
             title='Post 1 title',
             blogger=test_blogger,
@@ -90,4 +86,5 @@ class PostModelTest(TestCase):
 class PostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        pass
+        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
+        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
