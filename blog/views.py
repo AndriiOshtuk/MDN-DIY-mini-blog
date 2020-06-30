@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from blog.models import Blogger, Post, Comment
 from django.urls import reverse
@@ -70,6 +71,7 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+@staff_member_required
 def populate(request):
     context = {}
     fake = Faker()
