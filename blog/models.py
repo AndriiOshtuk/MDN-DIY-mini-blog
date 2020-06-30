@@ -1,11 +1,14 @@
 from django.db import models
 from datetime import date
-from django.urls import reverse # Used to generate URLs by reversing the URL patterns
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 # Create your models here.
 class Blogger(models.Model):
-    # nickname = models.CharField(max_length=50, verbose_name='Nickname', help_text='Enter blogger nickname')
+    """
+    Stores a single blogger bio information, related to :model:'auth.User'.
+
+    """
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     bio = models.CharField(max_length=300, verbose_name='Bio', help_text='Enter blogger biographical information')
    
@@ -13,10 +16,6 @@ class Blogger(models.Model):
         ordering = ['user']
 
     def __str__(self):
-
-        # print(f'\n\n\n {vars(self.user)} \n\n\n')
-
-
         return self.user.username
 
     def get_absolute_url(self):
@@ -24,6 +23,10 @@ class Blogger(models.Model):
 
 
 class Post(models.Model):
+    """
+    Stores a single blog post, related to :model:'blog.Blogger'.
+
+    """
     title = models.CharField(max_length=300, verbose_name='Title', help_text='Enter post title')
     blogger = models.ForeignKey('Blogger', on_delete=models.CASCADE, null=True)
     post_date = models.DateField(default=date.today(), verbose_name='Post date')
@@ -40,6 +43,10 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Stores a single comment, related to :model:'auth.User' and :model:'blog.Post'.
+
+    """
     text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
