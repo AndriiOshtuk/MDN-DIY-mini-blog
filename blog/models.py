@@ -5,14 +5,19 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Blogger(models.Model):
-    nickname = models.CharField(max_length=50, verbose_name='Nickname', help_text='Enter blogger nickname')
+    # nickname = models.CharField(max_length=50, verbose_name='Nickname', help_text='Enter blogger nickname')
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     bio = models.CharField(max_length=300, verbose_name='Bio', help_text='Enter blogger biographical information')
    
     class Meta:
-        ordering = ['nickname']
+        ordering = ['user']
 
     def __str__(self):
-        return self.nickname
+
+        # print(f'\n\n\n {vars(self.user)} \n\n\n')
+
+
+        return self.user.username
 
     def get_absolute_url(self):
         return reverse('blogger-detail', args=[str(self.id)])

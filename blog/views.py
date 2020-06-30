@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
+from django.contrib.auth.models import User
 from blog.models import Blogger, Post, Comment
 from django.urls import reverse
 from faker import Faker
@@ -77,7 +78,8 @@ def populate(request):
         simple_profile = fake.simple_profile()
         nickname = simple_profile.get('username', 'Dummy')
         bio = simple_profile.get('name', 'Dummy')
-        blogger = Blogger.objects.create(nickname=nickname, bio=bio)
+        user = User.objects.create_user(username=nickname, password='1X<ISRUkw+tuK')
+        blogger = Blogger.objects.create(user=user, bio=bio)
 
         for _ in range(5):
             title = fake.text()

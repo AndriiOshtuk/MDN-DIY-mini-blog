@@ -1,7 +1,7 @@
 from django.test import TestCase
-
 from blog.models import Blogger, Post
 from datetime import date
+
 
 class BloggerModelTest(TestCase):
     @classmethod
@@ -86,3 +86,8 @@ class PostModelTest(TestCase):
         post = Post.objects.get(id=1)
         self.assertEquals(post.get_absolute_url(), '/blog/1')
 
+
+class PostModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        pass
