@@ -8,6 +8,18 @@ from faker import Faker
 
 # Create your views here.
 class BloggerListView(generic.ListView):
+    """
+    Display a list of :model:'blog.Blogger'
+    
+    **Context**
+    
+    ''blogger_list''
+        A list of :model:'blog.Blogger'
+    
+    **Template:**
+
+    :template:'blog/blogger_list.html'
+    """
     model = Blogger
 
 
