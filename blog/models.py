@@ -16,9 +16,11 @@ class Blogger(models.Model):
         ordering = ['user']
 
     def __str__(self):
+        """Returns blogger name for display"""
         return self.user.username
 
     def get_absolute_url(self):
+        """Returns URL to a particular blogger detail page"""
         return reverse('blogger-detail', args=[str(self.id)])
 
 
@@ -36,9 +38,11 @@ class Post(models.Model):
         ordering = ['-post_date']
  
     def __str__(self):
+        """Returns post title for display"""
         return self.title
 
     def get_absolute_url(self):
+        """Returns URL to a particular post detail page"""
         return reverse('blog-detail', args=[str(self.id)])
 
 
@@ -56,4 +60,5 @@ class Comment(models.Model):
         ordering = ['-post_date']
 
     def __str__(self):
+        """Returns comment text for display"""
         return self.text
