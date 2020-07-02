@@ -9,7 +9,7 @@ This is a simple blog built with Python and Django.
 * There are models for blogger, post, comment
 * All users could see list of posts and bloggers 
 * All users could see individual posts with comments and dedicated blogger page
-* Loggeed in users can leave comments for posts
+* Logged-in users can leave comments for posts
 * Users can log in, log out and reset password
 * Admin users can create and manage models
 
