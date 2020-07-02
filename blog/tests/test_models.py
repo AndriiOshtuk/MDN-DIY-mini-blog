@@ -86,5 +86,13 @@ class PostModelTest(TestCase):
 class PostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
-        test_blogger = Blogger.objects.create(nickname='BigBoss', bio='It is a dummy test blogger')
+        user = User.objects.create_user(username='BigBoss', password='1X<ISRUkw+tuK')
+        test_blogger = Blogger.objects.create(user=user, bio='It is a dummy test blogger')
+        test_post = Post.objects.create(
+            title='Post 1 title',
+            blogger=test_blogger,
+            content='Post 1 body'
+        )
+        test_date = datetime.datetime.now()
+        Comment.objects.create(text='Dummey comment', post_date=test_date, user=test_blogger, post=test_post)
+  
