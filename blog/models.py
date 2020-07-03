@@ -50,8 +50,8 @@ class Comment(models.Model):
     """
     text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
-    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, verbose_name='Post')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='User')
 
     class Meta:
         ordering = ['-post_date']
