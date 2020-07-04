@@ -1,10 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from django.contrib.auth.models import User
 
 from datetime import date
 
-from blog.models import Post, Blogger
+from blog.models import Post, Blogger, Comment
+from blog.views import PostDetailView
 
 
 class BloggerListViewTest(TestCase):
@@ -112,31 +113,56 @@ class BloggerDetailViewTest(TestCase):
         self.assertEqual(response.context['blogger'].bio, 'It is a dunny test blogger 1')
 
 
-# class PostDetailViewTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         test_blogger = Blogger.objects.create(nickname='Blogger 1', bio='It is a dunny test blogger 1')
+class PostDetailViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_user = User.objects.create_user(username='BigBoss', password='123456789')
+        test_blogger = Blogger.objects.create(user=test_user, bio='It is a dunny test blogger 1')
 
-#         Post.objects.create(
-#                 title='Post test title',
-#                 blogger=test_blogger,
-#                 content='Post test body'
-#             )
-        
+        test_post = Post.objects.create(
+                title='Post test title',
+                blogger=test_blogger,
+                content='Post test body'
+            )
 
-#     def test_view_url_exists_at_desired_location(self):
-#         response = self.client.get('/blog/1')
-#         self.assertEqual(response.status_code, 200)
+        Comment.objects.create(text='Correct comment', user=test_user, post=test_post)
 
-#     def test_view_uses_correct_template(self):
-#         response = self.client.get('/blog/1')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'blog/post_detail.html')
+        # Create dummy post and comment 
+        test_user1 = User.objects.create_user(username='BigBoss1', password='123456789')
+        test_blogger1 = Blogger.objects.create(user=test_user1, bio='It is a dunny test blogger 1')
 
-#     def test_lists_all_data(self):
-#         response = self.client.get('/blog/1')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.context['post'].title, 'Post test title')
-#         self.assertEqual(response.context['post'].blogger.nickname, 'Blogger 1')
-#         self.assertEqual(response.context['post'].content, 'Post test body')
-#         self.assertEqual(response.context['post'].post_date, date.today())
+        test_post1 = Post.objects.create(
+                title='Post test title 1',
+                blogger=test_blogger1,
+                content='Post test body 1'
+            )
+
+        Comment.objects.create(text='Dummy comment', user=test_user1, post=test_post1)
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/blog/1')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('blog-detail', args=[1]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get('/blog/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/post_detail.html')
+
+    def test_lists_all_data(self):
+        response = self.client.get('/blog/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['post'].title, 'Post test title')
+        self.assertEqual(str(response.context['post'].blogger), 'BigBoss')
+        self.assertEqual(response.context['post'].content, 'Post test body')
+        self.assertEqual(response.context['post'].post_date, date.today())
+        self.assertTrue(response.context['comment_list'])
+    
+    def test_comments_displays_for_correct_post(self):
+        response = self.client.get('/blog/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['comment_list'])
+        self.assertEqual(response.context['comment_list'].values()[0]['text'], 'Correct comment')
