@@ -91,7 +91,7 @@ from django.urls import reverse_lazy
 import datetime
 from django.shortcuts import render, get_object_or_404
 
-# @login_required
+
 class CommentCreate(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['text']
@@ -118,8 +118,6 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
-
-    
 
 
 def index(request):
