@@ -77,10 +77,11 @@ class PostDetailView(generic.DetailView):
     """
     model = Post
 
+    # TODO Redo to use post.comment_set.all, then get_context_data() will be obsolete
     def get_context_data(self, **kwargs):
         """ Adds comment_list context variable with a list of commnets for this post"""
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        context['comment_list'] = Comment.objects.filter(post__title__contains=context['post'])
+        context['comment_list'] = Comment.objects.filter(post__id__exact=context['post'].id)
         return context
 
 
