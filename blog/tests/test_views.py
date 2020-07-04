@@ -188,3 +188,35 @@ class IndexViewTest(SimpleTestCase):
         response = self.client.get('/blog/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
+
+
+from django.http import HttpRequest 
+class PopulateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_user = User.objects.create_user('BigBoss', password='123456789', is_staff=True)
+        test_user.save()
+
+    def test_redirect_if_not_stuff_member(self):
+        response = self.client.get(reverse('populate'))
+        self.assertRedirects(response, '/accounts/login/?next=/blog/populate')
+
+    def test_view_uses_correct_template(self):
+        login = self.client.login(username='BigBoss', password='123456789')
+        response = self.client.get('/blog/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
+
+    def test_creates_twentyfive_fake_posts(self):
+        posts_count = Comment.objects.count()
+        self.assertEqual(posts_count, 0)
+
+        login = self.client.login(username='BigBoss', password='123456789')
+       
+
+        response = self.client.get(reverse('populate'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
+
+        posts_count = Comment.objects.count()
+        self.assertEqual(posts_count, 25)
