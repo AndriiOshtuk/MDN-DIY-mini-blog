@@ -86,25 +86,30 @@ class PostListViewTest(TestCase):
         self.assertTrue(len(response.context['post_list']) == 5)
 
 
-# class BloggerDetailViewTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         Blogger.objects.create(nickname='Blogger 1', bio='It is a dunny test blogger 1')
+class BloggerDetailViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_user = User.objects.create_user(username='BigBoss', password='123456789')
+        Blogger.objects.create(user=test_user, bio='It is a dunny test blogger 1')
 
-#     def test_view_url_exists_at_desired_location(self):
-#         response = self.client.get('/blog/blogger/1')
-#         self.assertEqual(response.status_code, 200)
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/blog/blogger/1')
+        self.assertEqual(response.status_code, 200)
 
-#     def test_view_uses_correct_template(self):
-#         response = self.client.get('/blog/blogger/1')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'blog/blogger_detail.html')
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('blogger-detail', args=[1]))
+        self.assertEqual(response.status_code, 200)
 
-#     def test_lists_all_data(self):
-#         response = self.client.get('/blog/blogger/1')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.context['blogger'].nickname, 'Blogger 1')
-#         self.assertEqual(response.context['blogger'].bio, 'It is a dunny test blogger 1')
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('blogger-detail', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/blogger_detail.html')
+
+    def test_lists_all_data(self):
+        response = self.client.get(reverse('blogger-detail', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(response.context['blogger']), 'BigBoss')
+        self.assertEqual(response.context['blogger'].bio, 'It is a dunny test blogger 1')
 
 
 # class PostDetailViewTest(TestCase):
