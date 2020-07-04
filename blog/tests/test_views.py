@@ -1,7 +1,8 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+from unittest import skip
 from datetime import date
 
 from blog.models import Post, Blogger, Comment
@@ -166,3 +167,24 @@ class PostDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['comment_list'])
         self.assertEqual(response.context['comment_list'].values()[0]['text'], 'Correct comment')
+
+
+class IndexViewTest(SimpleTestCase):
+    # TODO Added testcase for '/'' redirect to '/blog/' 
+    @skip("Not imlemented testcase yet")
+    def test_view_root_url_exists_at_desired_location(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_app_root_url_exists_at_desired_location(self):
+        response = self.client.get('/blog/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get('/blog/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
