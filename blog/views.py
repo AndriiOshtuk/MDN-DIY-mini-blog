@@ -134,13 +134,13 @@ def index(request):
 
 
 # TODO Move business logic to a separate file
-@staff_member_required
+@staff_member_required(login_url=reverse_lazy('login'))
 def populate(request):
     """
     Utility to populate DB with a fake data fast
     
     """
-    context = {}
+    context = {} #TODOD remove unused context
     fake = Faker()
 
     for _ in range(5):
