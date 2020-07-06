@@ -208,15 +208,12 @@ class PopulateViewTest(TestCase):
         self.assertTemplateUsed(response, 'index.html')
 
     def test_creates_twentyfive_fake_posts(self):
-        posts_count = Comment.objects.count()
+        posts_count = Post.objects.count()
         self.assertEqual(posts_count, 0)
 
         login = self.client.login(username='BigBoss', password='123456789')
-       
 
         response = self.client.get(reverse('populate'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
-
-        posts_count = Comment.objects.count()
-        self.assertEqual(posts_count, 25)
+        self.assertEqual(Post.objects.count(), 25)
