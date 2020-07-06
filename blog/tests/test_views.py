@@ -49,15 +49,15 @@ class PostListViewTest(TestCase):
         test_user2 = User.objects.create_user(username='BigBoss2', password='123456789')
         test_blogger2 = Blogger.objects.create(user=test_user2, bio='It is a dunny test blogger 2')
 
-        for post in range(number_of_posts):
+        for post_index in range(number_of_posts):
 
-            blogger = test_blogger1 if post % 2 else test_blogger2
+            blogger = test_blogger1 if post_index % 2 else test_blogger2
 
             Post.objects.create(
-                title=f'Post {post} title',
-                blogger=blogger,
-                content=f'Post {post} body'
-            )
+                    title=f'Post {post_index} title',
+                    blogger=blogger,
+                    content=f'Post {post_index} body'
+                )
 
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/blog/blogs/')
