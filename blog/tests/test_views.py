@@ -87,6 +87,21 @@ class PostListViewTest(TestCase):
         self.assertTrue(response.context['is_paginated'] == True)
         self.assertTrue(len(response.context['post_list']) == 5)
 
+    # TODO Modify setUpTestData() so posts have different creation dates
+    def test_posts_ordered_by_due_date(self):
+        response = self.client.get(reverse('blogs'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['post_list']), 20)
+
+        last_date = 0
+        for post in response.context['post_list']:
+            if last_date == 0:
+                last_date = post.post_date
+            else:
+                print(str(last_date) + 'vs ' + str(post.post_date))
+                self.assertTrue(last_date <= post.post_date)
+                last_date = post.post_date
+
 
 class BloggerDetailViewTest(TestCase):
     @classmethod
