@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+  <p>Post your comment for: <a href="{% url 'blog-detail' post.pk %}">{{ post }}</a></p>
   <form action="" method="post">
     {% csrf_token %}
     <table>
