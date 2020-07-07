@@ -48,10 +48,10 @@ class Comment(models.Model):
     """
     Stores a single comment, related to :model:'auth.User' and :model:'blog.Post'.
     """
-    text = models.TextField(max_length=500, help_text='Enter comment', verbose_name='Description')
+    text = models.TextField(max_length=500, help_text='Enter comment comment about blog here.', verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
-    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, verbose_name='Post')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='User')
 
     class Meta:
         ordering = ['-post_date']
