@@ -99,6 +99,7 @@ class CommentCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """
         Add author and associated blog to form data before setting it as valid (so it is saved to model)
+        
         """
         #Add logged-in user as author of comment
         form.instance.user = self.request.user
