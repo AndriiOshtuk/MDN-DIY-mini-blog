@@ -232,3 +232,57 @@ class PopulateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
         self.assertEqual(Post.objects.count(), 25)
+
+
+class CommentCreateViewTest(TestCase):
+    def setUp(self):
+        test_user1 = User.objects.create_user(username='BigBoss1', password='123456789')
+        test_blogger1 = Blogger.objects.create(user=test_user1, bio='It is a dunny test blogger 1')
+
+        self.test_post = Post.objects.create(
+            title=f'Post title',
+            blogger=test_blogger1,
+            content=f'Post body'
+            )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse('add-comment', kwargs={'pk': self.test_post.pk}))
+        # Manually check redirect (Can't use assertRedirect, because the redirect URL is unpredictable)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith('/accounts/login/'))
+
+    def test_logged_in_can_access_create_comment_form(self):
+        login = self.client.login(username='BigBoss1', password='123456789')
+        response = self.client.get(reverse('add-comment', kwargs={'pk': self.test_post.pk}))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_HTTP404_for_invalid_post_if_logged_in(self):
+        # unlikely index to match our post!
+        sql_max_integer = 9223372036854775807
+        login = self.client.login(username='BigBoss1', password='123456789')
+        response = self.client.get(reverse('add-comment', kwargs={'pk': sql_max_integer}))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_uses_correct_template(self):
+        login = self.client.login(username='BigBoss1', password='123456789')
+        response = self.client.get(reverse('add-comment', kwargs={'pk': self.test_post.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/comment_form.html')
+
+    def test_redirects_to_blog_detail_page_on_success(self):
+        comment_text = 'Test comment'
+        login = self.client.login(username='BigBoss1', password='123456789')        
+        response = self.client.post(reverse('add-comment', kwargs={'pk': self.test_post.pk}), 
+            {'text': comment_text})
+
+        self.assertRedirects(response, reverse('blog-detail', kwargs={'pk': self.test_post.pk}))
+
+    def test_form_empty_text_field(self):
+        login = self.client.login(username='BigBoss1', password='123456789')
+
+        response = self.client.post(reverse('add-comment', kwargs={'pk': self.test_post.pk}), {'text': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response, 'form', 'text', 'This field is required.')
