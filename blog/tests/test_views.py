@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from unittest import skip
-from datetime import date
+from datetime import date, datetime, timedelta
+from pytz import UTC
+import unittest.mock as mock
 
 from blog.models import Post, Blogger, Comment
 from blog.views import PostDetailView
@@ -58,6 +60,15 @@ class PostListViewTest(TestCase):
                     blogger=blogger,
                     content=f'Post {post_index} body'
                 )
+
+            # with mock.patch('datetime.date.today') as mock_now:
+            #     mock_now.return_value = datetime.now(tz=UTC) - timedelta(days=post_index)
+
+            #     Post.objects.create(
+            #         title=f'Post {post_index} title',
+            #         blogger=blogger,
+            #         content=f'Post {post_index} body'
+            #     )
 
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/blog/blogs/')
@@ -204,8 +215,7 @@ class IndexViewTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
 
-
-from django.http import HttpRequest 
+ 
 class PopulateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
