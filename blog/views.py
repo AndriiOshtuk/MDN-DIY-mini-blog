@@ -1,10 +1,17 @@
 from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.views.generic.edit import CreateView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from blog.models import Blogger, Post, Comment
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404
+
 from faker import Faker
+import datetime
+
+from blog.models import Blogger, Post, Comment
+
 
 # Create your views here.
 class BloggerListView(generic.ListView):
@@ -83,13 +90,6 @@ class PostDetailView(generic.DetailView):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['comment_list'] = Comment.objects.filter(post__id__exact=context['post'].id)
         return context
-
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-import datetime
-from django.shortcuts import render, get_object_or_404
 
 
 class CommentCreate(LoginRequiredMixin, CreateView):
