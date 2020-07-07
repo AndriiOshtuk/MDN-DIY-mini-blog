@@ -95,7 +95,6 @@ class PostDetailView(generic.DetailView):
 class CommentCreate(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['text']
-    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         """
