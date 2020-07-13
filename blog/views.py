@@ -1,14 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
 
 from faker import Faker
-import datetime
 
 from blog.models import Blogger, Post, Comment
 
@@ -17,16 +15,16 @@ from blog.models import Blogger, Post, Comment
 class BloggerListView(generic.ListView):
     """
     Display a list of :model:'blog.Blogger'
-    
+
     **Context**
-    
+
     ''blogger_list''
         A list of :model:'blog.Blogger'
-    
+
     **Template:**
 
     :template:'blog/blogger_list.html'
-    
+
     """
     model = Blogger
 
@@ -34,16 +32,16 @@ class BloggerListView(generic.ListView):
 class BloggerDetailView(generic.DetailView):
     """
     Display an individual :model:'blog.Blogger'
-    
+
     **Context**
-    
+
     ''blogger''
         An instance of :model:'blog.Blogger'
-    
+
     **Template:**
-    
+
     :template:'blog/blogger_detail.html'
-    
+
     """
     model = Blogger
 
@@ -51,16 +49,16 @@ class BloggerDetailView(generic.DetailView):
 class PostListView(generic.ListView):
     """
     Display a list of :model:'blog.Post'
-    
+
     **Context**
-    
+
     ''post_list''
         A list of :model:'blog.Post'
-    
+
     **Template:**
 
     :template:'blog/post_list.html'
-    
+
     """
     model = Post
     paginate_by = 20
@@ -69,18 +67,18 @@ class PostListView(generic.ListView):
 class PostDetailView(generic.DetailView):
     """
     Display an individual :model:'blog.Post'
-    
+
     **Context**
-    
+
     ''post''
         An instance of :model:'blog.Post'
     ''comment_list''
         A list of :model:'blog:Comment' related to post
-    
+
     **Template:**
-    
+
     :template:'blog/post_detail.html'
-    
+
     """
     model = Post
 
@@ -99,12 +97,12 @@ class CommentCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """
         Add author and associated blog to form data before setting it as valid (so it is saved to model)
-        
+
         """
-        #Add logged-in user as author of comment
+        # Add logged-in user as author of comment
         form.instance.user = self.request.user
-        #Associate comment with blog based on passed id
-        form.instance.post=get_object_or_404(Post, pk = self.kwargs['pk'])
+        # Associate comment with blog based on passed id
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
 
         # Call super-class form validation behaviour
         return super(CommentCreate, self).form_valid(form)
@@ -113,21 +111,21 @@ class CommentCreate(LoginRequiredMixin, CreateView):
         # Call the base implementation first to get a context
         context = super(CommentCreate, self).get_context_data(**kwargs)
         # Get the blogger object from the "pk" URL parameter and add it to the context
-        context['post'] = get_object_or_404(Post, pk = self.kwargs['pk'])
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         return context
 
     def get_success_url(self):
-        return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
+        return reverse('blog-detail', kwargs={'pk': self.kwargs['pk']})
 
 
 def index(request):
     """
     Display the home page with general site info
-    
+
     **Template:**
-    
+
     :template:'index.html.html'
-    
+
     """
     context = {}
     return render(request, 'index.html', context=context)
@@ -138,9 +136,9 @@ def index(request):
 def populate(request):
     """
     Utility to populate DB with a fake data fast
-    
+
     """
-    context = {} #TODOD remove unused context
+    context = {}  # TODOD remove unused context
     fake = Faker()
 
     for _ in range(5):
@@ -154,6 +152,6 @@ def populate(request):
             title = fake.text()
             content = fake.text()
             post_date = fake.date_between(start_date='-5y',)
-            Post.objects.create(title=title, content=content, post_date=post_date, blogger= blogger)
+            Post.objects.create(title=title, content=content, post_date=post_date, blogger=blogger)
 
     return render(request, 'index.html', context=context)

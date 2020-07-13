@@ -3,14 +3,14 @@ from datetime import date
 from django.urls import reverse
 from django.contrib.auth.models import User
 
-# Create your models here.
+
 class Blogger(models.Model):
     """
     Stores a single blogger bio information, related to :model:'auth.User'.
     """
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     bio = models.CharField(max_length=300, verbose_name='Bio', help_text='Enter blogger biographical information')
-   
+
     class Meta:
         ordering = ['user']
 
@@ -34,7 +34,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-post_date']
- 
+
     def __str__(self):
         """Returns post title for display"""
         return self.title
@@ -48,7 +48,9 @@ class Comment(models.Model):
     """
     Stores a single comment, related to :model:'auth.User' and :model:'blog.Post'.
     """
-    text = models.TextField(max_length=500, help_text='Enter comment comment about blog here.', verbose_name='Description')
+    text = models.TextField(
+        max_length=500, help_text='Enter comment comment about blog here.',
+        verbose_name='Description')
     post_date = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Post date')
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, verbose_name='Post')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='User')

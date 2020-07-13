@@ -118,7 +118,7 @@ class CommentModelTest(TestCase):
     def test_post_date_label(self):
         comment = Comment.objects.get(id=1)
         field_label = comment._meta.get_field('post_date').verbose_name
-        self.assertEquals(field_label, 'Post date')    
+        self.assertEquals(field_label, 'Post date')
 
     def test_post_date_is_today(self):
         comment = Comment.objects.get(id=1)

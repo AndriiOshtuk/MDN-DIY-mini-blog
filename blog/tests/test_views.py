@@ -3,12 +3,10 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from unittest import skip
-from datetime import date, datetime, timedelta
-from pytz import UTC
+from datetime import date
 import unittest.mock as mock
 
 from blog.models import Post, Blogger, Comment
-from blog.views import PostDetailView
 
 
 class BloggerListViewTest(TestCase):
@@ -37,7 +35,7 @@ class BloggerListViewTest(TestCase):
         response = self.client.get(reverse('bloggers'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == False)
+        self.assertFalse(response.context['is_paginated'])
         self.assertTrue(len(response.context['blogger_list']) == 8)
 
 
@@ -73,7 +71,7 @@ class PostListViewTest(TestCase):
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/blog/blogs/')
         self.assertEqual(response.status_code, 200)
-           
+
     def test_view_url_accessible_by_name(self):
         response = self.client.get(reverse('blogs'))
         self.assertEqual(response.status_code, 200)
@@ -82,12 +80,12 @@ class PostListViewTest(TestCase):
         response = self.client.get(reverse('blogs'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/post_list.html')
-        
+
     def test_pagination_is_correct(self):
         response = self.client.get(reverse('blogs'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['post_list']) == 20)
 
     def test_lists_all_authors(self):
@@ -95,7 +93,7 @@ class PostListViewTest(TestCase):
         response = self.client.get(reverse('blogs')+'?page=2')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['post_list']) == 5)
 
     # TODO Modify setUpTestData() so posts have different creation dates
@@ -154,7 +152,7 @@ class PostDetailViewTest(TestCase):
 
         Comment.objects.create(text='Correct comment', user=test_user, post=test_post)
 
-        # Create dummy post and comment 
+        # Create dummy post and comment
         test_user1 = User.objects.create_user(username='BigBoss1', password='123456789')
         test_blogger1 = Blogger.objects.create(user=test_user1, bio='It is a dunny test blogger 1')
 
@@ -187,7 +185,7 @@ class PostDetailViewTest(TestCase):
         self.assertEqual(response.context['post'].content, 'Post test body')
         self.assertEqual(response.context['post'].post_date, date.today())
         self.assertTrue(response.context['comment_list'])
-    
+
     def test_comments_displays_for_correct_post(self):
         response = self.client.get('/blog/1')
         self.assertEqual(response.status_code, 200)
@@ -196,7 +194,7 @@ class PostDetailViewTest(TestCase):
 
 
 class IndexViewTest(SimpleTestCase):
-    # TODO Added testcase for '/'' redirect to '/blog/' 
+    # TODO Added testcase for '/'' redirect to '/blog/'
     @skip("Not imlemented testcase yet")
     def test_view_root_url_exists_at_desired_location(self):
         response = self.client.get('/')
@@ -215,7 +213,7 @@ class IndexViewTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
 
- 
+
 class PopulateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -227,7 +225,7 @@ class PopulateViewTest(TestCase):
         self.assertRedirects(response, '/accounts/login/?next=/blog/populate')
 
     def test_view_uses_correct_template(self):
-        login = self.client.login(username='BigBoss', password='123456789')
+        self.client.login(username='BigBoss', password='123456789')
         response = self.client.get('/blog/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
@@ -236,7 +234,7 @@ class PopulateViewTest(TestCase):
         posts_count = Post.objects.count()
         self.assertEqual(posts_count, 0)
 
-        login = self.client.login(username='BigBoss', password='123456789')
+        self.client.login(username='BigBoss', password='123456789')
 
         response = self.client.get(reverse('populate'))
         self.assertEqual(response.status_code, 200)
@@ -250,9 +248,9 @@ class CommentCreateViewTest(TestCase):
         test_blogger1 = Blogger.objects.create(user=test_user1, bio='It is a dunny test blogger 1')
 
         self.test_post = Post.objects.create(
-            title=f'Post title',
+            title='Post title',
             blogger=test_blogger1,
-            content=f'Post body'
+            content='Post body'
             )
 
     def test_redirect_if_not_logged_in(self):
@@ -262,7 +260,7 @@ class CommentCreateViewTest(TestCase):
         self.assertTrue(response.url.startswith('/accounts/login/'))
 
     def test_logged_in_can_access_create_comment_form(self):
-        login = self.client.login(username='BigBoss1', password='123456789')
+        self.client.login(username='BigBoss1', password='123456789')
         response = self.client.get(reverse('add-comment', kwargs={'pk': self.test_post.pk}))
 
         self.assertEqual(response.status_code, 200)
@@ -270,13 +268,13 @@ class CommentCreateViewTest(TestCase):
     def test_HTTP404_for_invalid_post_if_logged_in(self):
         # unlikely index to match our post!
         sql_max_integer = 9223372036854775807
-        login = self.client.login(username='BigBoss1', password='123456789')
+        self.client.login(username='BigBoss1', password='123456789')
         response = self.client.get(reverse('add-comment', kwargs={'pk': sql_max_integer}))
 
         self.assertEqual(response.status_code, 404)
 
     def test_uses_correct_template(self):
-        login = self.client.login(username='BigBoss1', password='123456789')
+        self.client.login(username='BigBoss1', password='123456789')
         response = self.client.get(reverse('add-comment', kwargs={'pk': self.test_post.pk}))
 
         self.assertEqual(response.status_code, 200)
@@ -284,14 +282,15 @@ class CommentCreateViewTest(TestCase):
 
     def test_redirects_to_blog_detail_page_on_success(self):
         comment_text = 'Test comment'
-        login = self.client.login(username='BigBoss1', password='123456789')        
-        response = self.client.post(reverse('add-comment', kwargs={'pk': self.test_post.pk}), 
+        self.client.login(username='BigBoss1', password='123456789')
+        response = self.client.post(
+            reverse('add-comment', kwargs={'pk': self.test_post.pk}),
             {'text': comment_text})
 
         self.assertRedirects(response, reverse('blog-detail', kwargs={'pk': self.test_post.pk}))
 
     def test_form_empty_text_field(self):
-        login = self.client.login(username='BigBoss1', password='123456789')
+        self.client.login(username='BigBoss1', password='123456789')
 
         response = self.client.post(reverse('add-comment', kwargs={'pk': self.test_post.pk}), {'text': ''})
         self.assertEqual(response.status_code, 200)
