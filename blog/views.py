@@ -6,9 +6,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import logging
+
 from faker import Faker
 
 from blog.models import Blogger, Post, Comment
+
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -127,6 +131,9 @@ def index(request):
     :template:'index.html.html'
 
     """
+    logger.info(f'{request.user} accessed to index.html')
+    # logger.warning(f'W Access to index with {request.user}')
+    # logger.error(f'E Access to index with {request.user}')
     context = {}
     return render(request, 'index.html', context=context)
 

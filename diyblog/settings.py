@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+
+    'raven.contrib.django.raven_compat',
+
     'blog.apps.BlogConfig',
 ]
 
@@ -148,3 +154,51 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = 'dev.andrii.oshtuk@gmail.com'
+
+LOGGING = {
+    'version': 1,
+    # Version of logging
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        # Add Handler for Sentry for `warning` and above
+        'sentry': {
+            'level': 'INFO',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+    },
+    # Loggers ####################################################################
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['console', 'sentry'],
+        },
+        'diyblog': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'handlers': ['console', 'sentry', ],
+            # required to avoid double logging with root logger
+            'propagate': False,
+        },
+    },
+}
+
+sentry_sdk.init(
+    dsn="https://786f05aad7dd4accb1b31e651f0c3d4e@o421420.ingest.sentry.io/5341152",
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+
+RAVEN_CONFIG = {
+    'dsn': 'https://786f05aad7dd4accb1b31e651f0c3d4e:67572ff60d8446a6a158efd7a2a87714@o421420.ingest.sentry.io/5341152',
+}
