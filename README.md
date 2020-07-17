@@ -13,6 +13,7 @@ This is a simple blog built with Python and Django.
 * Users can log in, log out and reset password
 * Admin users can create and manage models
 * Project documentation is available via the admin interface 
+* Events/issues are tracked and logged both to console and Sentry
 
 ## Technologies
 * Django 3.0
@@ -21,6 +22,7 @@ This is a simple blog built with Python and Django.
 * SendGrid
 * sqlite3
 * admindocs
+* Sentry
 
 ## Check it out
 The application is available at https://mdn-diy-mini-blog.herokuapp.com  
