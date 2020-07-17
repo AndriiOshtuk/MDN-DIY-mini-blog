@@ -131,7 +131,11 @@ def index(request):
     :template:'index.html.html'
 
     """
-    logger.info(f'{request.user} accessed to index.html')
+    first_visit = request.session.get('first_visit', True)
+    if first_visit:
+        request.session['first_visit'] = False
+        logger.info(f'{request.user} accessed to index.html')
+
     # logger.warning(f'W Access to index with {request.user}')
     # logger.error(f'E Access to index with {request.user}')
     context = {}
