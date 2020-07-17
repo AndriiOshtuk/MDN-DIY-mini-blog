@@ -13,7 +13,7 @@ This is a simple blog built with Python and Django.
 * Users can log in, log out and reset password
 * Admin users can create and manage models
 * Project documentation is available via the admin interface 
-* Events/issues are tracked and logged both to console and Sentry
+* All events/issues above DJANGO_LOG_LEVEL are sent both to console and Sentry
 
 ## Technologies
 * Django 3.0
