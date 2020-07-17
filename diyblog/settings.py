@@ -161,7 +161,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'console': {
-            'format': '%(name)-12s [%(levelname)]-8s %(message)s',
+            'format': '%(name)-12s [%(levelname)-8s] %(message)s',
         },
     },
     'handlers': {
