@@ -295,3 +295,31 @@ class CommentCreateViewTest(TestCase):
         response = self.client.post(reverse('add-comment', kwargs={'pk': self.test_post.pk}), {'text': ''})
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, 'form', 'text', 'This field is required.')
+
+
+class ErrorViewTest(SimpleTestCase):
+    def test_404page_uses_correct_template(self):
+        # unlikely index to match our post!
+        response = self.client.get('/blog/bloggers/9223372036854775807')
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(response, '404.html')
+        self.assertIn('The page you requested can not be found.', response.content.decode('utf-8'))
+
+
+    @patch('client.get')
+    def test_500_page(self, mock_get):
+        """ Should check is 500 page correct """
+        mock_get.return_value = HttpResponse(status=500) 
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, '500.html')
+        self.assertIn('500 - Server Error', response.content.decode('utf-8'))
+
+    # TODO Added testcase for 500 error
+    # @mock.patch('blog.views.index.get', views.ErrorHandler.as_view(error_code=500))
+    # def test_500_page(self):
+    #     """ Should check is 500 page correct """
+    #     response = self.client.get('/')
+    #     self.assertEqual(response.status_code, 500)
+    #     self.assertTemplateUsed(response, '500.html')
+    #     self.assertIn('500 - Server Error', response.content.decode('utf-8'))
