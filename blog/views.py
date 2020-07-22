@@ -11,6 +11,7 @@ import logging
 from faker import Faker
 
 from blog.models import Blogger, Post, Comment
+import services
 
 logger = logging.getLogger(__name__)
 
@@ -150,19 +151,21 @@ def populate(request):
 
     """
     context = {}  # TODOD remove unused context
-    fake = Faker()
+    # fake = Faker()
 
-    for _ in range(5):
-        simple_profile = fake.simple_profile()
-        nickname = simple_profile.get('username', 'Dummy')
-        bio = simple_profile.get('name', 'Dummy')
-        user = User.objects.create_user(username=nickname, password='1X<ISRUkw+tuK')
-        blogger = Blogger.objects.create(user=user, bio=bio)
+    # for _ in range(5):
+    #     simple_profile = fake.simple_profile()
+    #     nickname = simple_profile.get('username', 'Dummy')
+    #     bio = simple_profile.get('name', 'Dummy')
+    #     user = User.objects.create_user(username=nickname, password='1X<ISRUkw+tuK')
+    #     blogger = Blogger.objects.create(user=user, bio=bio)
 
-        for _ in range(5):
-            title = fake.text()
-            content = fake.text()
-            post_date = fake.date_between(start_date='-5y',)
-            Post.objects.create(title=title, content=content, post_date=post_date, blogger=blogger)
+    #     for _ in range(5):
+    #         title = fake.text()
+    #         content = fake.text()
+    #         post_date = fake.date_between(start_date='-5y',)
+    #         Post.objects.create(title=title, content=content, post_date=post_date, blogger=blogger)
+
+    services.populate_db_with_dummy_data()
 
     return render(request, 'index.html', context=context)
