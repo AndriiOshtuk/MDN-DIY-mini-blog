@@ -7,17 +7,17 @@
             "posts": [
                 {
                     "title" : "Falcon 9 launch",
-                    "date" : "2020.07.19",                    
+                    "date" : "2020-07-19",                    
                     "text" : "Targeting Monday, July 20 for Falcon 9 launch of ANASIS-II from SLC-40"
                 },
                 {
                     "title" : "Vacancy",
-                    "date" : "2020.07.18",
+                    "date" : "2020-07-18",
                     "text" : "If you’ve solved hard problems with phones / wearables (sealing, signal processing, inductive charging, power mgmt, etc), please consider working at engineering"
                 },
                 {
                     "title" : "Korolev",
-                    "date" : "2020.07.11",
+                    "date" : "2020-07-11",
                     "text" : "I spoke with Korolev’s family today. He was one of the very best."
                 },
                 {
@@ -33,22 +33,22 @@
             "posts": [
                 {
                     "title" : "Alexa",
-                    "date" : "2020.07.16",                    
+                    "date" : "2020-07-16",                    
                     "text" : "Cool: I asked \"Alexa, sing me a song\" and she responded with a little rap about Grace Hopper."
                 },
                 {
                     "title" : "GameSalad",
-                    "date" : "2020.07.08",
+                    "date" : "2020-07-08",
                     "text" : "Has GameSalad's password db been leaked? I just got one of those scam btc extortion emails showing a password I once used for GameSalad."
                 },
                 {
                     "title" : "Python 3.9b1 is out",
-                    "date" : "2020.05.19",
+                    "date" : "2020-05-19",
                     "text" : "Python 3.9b1 is out. Try it! Thanks to everyone who contributed, to @baybryj @llanga, @zooba (the release team), and to @VictorStinner for so many things..."
                 },
                 {
                     "title" : "Timezones new home",
-                    "date" : "2020.07.05",
+                    "date" : "2020-07-05",
                     "text" : "Excited to see this happening! Timezones move into the stdlib."
                 }
             ]
@@ -59,17 +59,17 @@
             "posts": [
                 {
                     "title" : "Alexa",
-                    "date" : "2020.07.19",                    
+                    "date" : "2020-07-19",                    
                     "text" : "How do you prefer to consume #Python tutorials? By reading or by watching videos?"
                 },
                 {
                     "title" : "GitHub integration",
-                    "date" : "2020.07.08",
+                    "date" : "2020-07-08",
                     "text" : "Not a lot of people know it, but #PyCharm is tightly integrated with GitHub (sneak peek: there is more coming). Check out how easy it is to get started with a repository from GitHub."
                 },
                 {
                     "title" : "Python 3.9b1 is out",
-                    "date" : "2020.05.14",
+                    "date" : "2020-05-14",
                     "text" : "It's been a while since our last webinar, but we came back strong! On Tuesday, the 28th of July at 18h CEST / 12h EDT we will host \"Simplify Your Tests With Fixtures\" with Oliver Bestwalter. Make sure to register now!"
                 }
             ]
@@ -80,17 +80,17 @@
             "posts": [
                 {
                     "title" : "Crazy",
-                    "date" : "2020.01.29",                    
+                    "date" : "2020-01-29",                    
                     "text" : "If you want a fun example of how standards people are often completely disconnected from reality, the DAB digital radio specification includes an entire section on delivering Java applets over digital radio. Not a single product ever implemented it."
                 },
                 {
                     "title" : "Government",
-                    "date" : "2020.07.08",
+                    "date" : "2020-07-08",
                     "text" : "Somehow, this government is managing to exceed all of my expectations of just how hopeless it would be."
                 },
                 {
                     "title" : "On Google",
-                    "date" : "2019.06.15",
+                    "date" : "2019-06-15",
                     "text" : "It's pretty hard to tell whether many Google technologies would make it out of the starting gate without the heavy thumb that Google monopoly power places on the scale.\nIronically, Googlers all believe that their technologies are winning because they're better.."
                 }
             ]
