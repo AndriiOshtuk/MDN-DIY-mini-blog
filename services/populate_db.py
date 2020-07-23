@@ -59,6 +59,13 @@ class DummyData():
 
         # TODO Add error handling
 
+    def posts_list_for_user(self, user):
+        for item in self.data['dummy_data']:
+            if item['user'] == user:
+                return item['posts']
+
+        # TODO Add error handling
+
     def convert_json_to_dict(self, record):
         # for name in self.data['dummy_data']:
         #     if name['user'] == user:
@@ -86,14 +93,7 @@ class DummyData():
 
                 posts.append(post)
 
-        return posts
-
-
-
-
- 
-
-    
+        return posts    
 
     def __str__(self):
         return f'In memory representation of {JSON_FILE_PATH} file'
@@ -108,27 +108,22 @@ def populate_db_with_dummy_data():
 
     for user in data.users_list:
         dummy_user = User.objects.create_user(username=user, password=password)
-        Blogger.objects.create(user=dummy_user, bio=data.get_user_bio(user))
-        print(f'Create{user}')
+        test_blogger = Blogger.objects.create(user=dummy_user, bio=data.get_user_bio(user))
+        logger.info(f'Created dummy user {dummy_user}')
 
-
-# fake = Faker()
-
-#     for _ in range(5):
-#         simple_profile = fake.simple_profile()
-#         nickname = simple_profile.get('username', 'Dummy')
-#         bio = simple_profile.get('name', 'Dummy')
-#         user = User.objects.create_user(username=nickname, password='1X<ISRUkw+tuK')
-#         blogger = Blogger.objects.create(user=user, bio=bio)
-
-#         for _ in range(5):
-#             title = fake.text()
-#             content = fake.text()
-#             post_date = fake.date_between(start_date='-5y',)
-#             Post.objects.create(title=title, content=content, post_date=post_date, blogger=blogger)
+        for post in data.posts_list_for_user(user):
+                Post.objects.create(
+                    title=post['title'],
+                    blogger=test_blogger,
+                    content=post['text'],
+                    # post_date = post['date'], # TODO implement post_date
+                )
+                title=post['title']
+                logger.info(f'Created dummy post \"{title}\"" for blogger {test_blogger}')
 
 
 import unittest
+from django.test import TestCase
 
 TEST_USERS = ['elonmusk', 'gvanrossum', 'pycharm', 'skippyhammond']
 TEST_POSTS_NUMBER = 14
@@ -150,9 +145,29 @@ class TestDummyData(unittest.TestCase):
         user_bio = self.data.get_user_bio('pycharm')
         self.assertEqual(user_bio, 'Python IDE for Professional Developers with unique code assistance and analysis, for productive Python, Web and scientific development')
     
-    def test_pconvert_json_to_list(self):
-        posts = self.data.convert_json_to_list()
+    # def test_convert_json_to_list(self):
+    #     posts = self.data.convert_json_to_list()
+
+    #     for p in posts:
+    #         print(p)
+    #     self.assertEqual(posts_number, TEST_POSTS_NUMBER)
+
+    def test_posts_list_for_user(self):
+        posts = self.data.posts_list_for_user('elonmusk')
 
         for p in posts:
             print(p)
-        self.assertEqual(posts_number, TEST_POSTS_NUMBER)
+        self.assertEqual(len(posts), 4)
+
+
+class TestPopulateDb(unittest.TestCase):
+    def test_lists_all_data(self):
+        populate_db_with_dummy_data()
+
+        response = self.client.get('/blog/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['post'].title, 'Falcon 9 launc')
+        self.assertEqual(str(response.context['post'].blogger), 'elonmusk')
+        self.assertEqual(response.context['post'].content, 'Targeting Monday, July 20 for Falcon 9 launch of ANASIS-II from SLC-40')
+        # self.assertEqual(response.context['post'].post_date, date.today())
+        # self.assertTrue(response.context['comment_list'])
