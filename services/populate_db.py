@@ -23,8 +23,6 @@ class WilyIgnoreGitRepositoryError(Exception):
         self.message = "Please add '.wily/' to .gitignore before running wily"
 
 
-
-
 class DummyData():
     """Represents a dummy data loaded from a json file."""
     def __init__(self):
@@ -82,18 +80,18 @@ class DummyData():
             bio = user_object['bio']
 
             for record in user_object['posts']:
-                post_title, post_date, post_text = self.convert_json_to_dict(record)
+                title, date, text = self.convert_json_to_dict(record)
 
                 post = {}
                 post['user'] = user_name
                 post['bio'] = bio
-                post['post_title'] = post_title
-                post['post_date'] = post_date
-                post['post_text'] = post_text
+                post['post_title'] = title
+                post['post_date'] = date
+                post['post_text'] = text
 
                 posts.append(post)
 
-        return posts    
+        return posts
 
     def __str__(self):
         return f'In memory representation of {JSON_FILE_PATH} file'
@@ -112,21 +110,23 @@ def populate_db_with_dummy_data():
         logger.info(f'Created dummy user {dummy_user}')
 
         for post in data.posts_list_for_user(user):
-                Post.objects.create(
-                    title=post['title'],
-                    blogger=test_blogger,
-                    content=post['text'],
-                    # post_date = post['date'], # TODO implement post_date
-                )
-                title=post['title']
-                logger.info(f'Created dummy post \"{title}\"" for blogger {test_blogger}')
+            Post.objects.create(
+                title=post['title'],
+                blogger=test_blogger,
+                content=post['text'],
+                # post_date = post['date'], # TODO implement post_date
+            )
+            title = post['title']
+            logger.info(f'Created dummy post \"{title}\" for blogger {test_blogger}')
 
 
+# TODO Move this code out
 import unittest
 from django.test import TestCase
 
 TEST_USERS = ['elonmusk', 'gvanrossum', 'pycharm', 'skippyhammond']
 TEST_POSTS_NUMBER = 14
+
 
 class TestDummyData(unittest.TestCase):
     @classmethod
@@ -144,7 +144,7 @@ class TestDummyData(unittest.TestCase):
     def test_get_user_bio(self):
         user_bio = self.data.get_user_bio('pycharm')
         self.assertEqual(user_bio, 'Python IDE for Professional Developers with unique code assistance and analysis, for productive Python, Web and scientific development')
-    
+
     # def test_convert_json_to_list(self):
     #     posts = self.data.convert_json_to_list()
 
